@@ -22,6 +22,7 @@ import AddEdu from './Components/addeducation/AddEdu';
 import Profiles from './Components/profiles/Profiles'; 
 import Profile from './Components/Profile/Profile'; 
 import Posts from './Components/Posts/Posts'; 
+import PostComments from './Components/Posts/PostComments'; 
 
 
 class App extends Component {
@@ -56,14 +57,31 @@ class App extends Component {
                     <Route path='/register' component={Register} />
                     <Route path='/login' component={Login} />
                     <Switch>
-                        <PrivateRoutes path='/dashboard' component={Dashboard }/>  
-                        <PrivateRoutes path='/create-profile' component={CreateProfile} />    
+                        <PrivateRoutes path='/dashboard' component={Dashboard }/>
+                    </Switch>
+                    <Switch>
+                        <PrivateRoutes path='/create-profile' component={CreateProfile} /> 
+                    </Switch>
+                    <Switch>
                         <PrivateRoutes path='/edit-profile' component={EditProfile} />
+                    </Switch>
+                    <Switch>
                         <PrivateRoutes path='/add-experience' component={AddExp} />
+                    </Switch>
+                    <Switch>
                         <PrivateRoutes path='/add-education' component={AddEdu} />
+                    </Switch>
+                    <Switch>
                         <PrivateRoutes path='/profiles' component={Profiles} />
+                    </Switch>
+                    <Switch>
                         <PrivateRoutes path='/profile/:handle' component={Profile} />
+                    </Switch>
+                    <Switch>
                         <PrivateRoutes path='/posts' component={Posts} />
+                    </Switch>
+                    <Switch>
+                        <PrivateRoutes path='/post/:id' component={PostComments} />
                     </Switch>
                 <Footer/>
             </div>

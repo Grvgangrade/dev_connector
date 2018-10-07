@@ -150,27 +150,35 @@ router.post('/comment/:id' , passport.authenticate('jwt' , { session: false}), (
     .catch(err => res.json(err));
 })
 
-//Delete  comment by id
-router.delete('/comment/:id/:comment_id', passport.authenticate('jwt' , { session: false }) , ( req, res) => {
-    Post.findById(req.params.id).then(post => {
-        //find if comment exist
-        if(post.comments.filter(comment => comment.id.toString() === req.params.comment_id).length === 0){
-            return res.status(404).json({nocomment : 'Comment does not exist'})
+// @route   DELETE api/posts/comment/:id/:comment_id
+// @desc    Remove comment from post
+// @access  Private
+router.delete('/comment/:id/:comment_id' , passport.authenticate('jwt' , { session : false }) , (req, res) => {
+    Post.findById(req.params.id)
+      .then(post => {
+        // Check to see if comment exists
+        if (
+          post.comments.filter(
+            comment => comment._id.toString() === req.params.comment_id
+          ).length === 0
+        ) {
+          return res
+            .status(404)
+            .json({ commentnotexists: 'Comment does not exist' });
         }
-        
-        //find the remove index
-        const removeIndex = post.comments.map(comment => {
-            comment.user.toString();
-        })
-        .indexOf(req.params.comment_id)
-        
-        //remove comment
-        post.comments.splice(removeIndex, 1)
-        
-        post.save().then(post => res.json(post));
-    })
-    .catch(err => res.json(err))
-})
 
+        // Get remove index
+        const removeIndex = post.comments
+          .map(item => item._id.toString())
+          .indexOf(req.params.comment_id);
+
+        // Splice comment out of array
+        post.comments.splice(removeIndex, 1);
+
+        post.save().then(post => res.json(post));
+      })
+      .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
+  }
+);
 
 module.exports = router;
